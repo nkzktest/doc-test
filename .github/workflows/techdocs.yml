@@ -34,7 +34,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+      - name: Verbose
+        run: Generating docs - $ENTITY_NAMESPACE/$ENTITY_KIND/$ENTITY_NAME
+      - name: Debug
+        run: pwd && echo && ls && echo 
       - name: Generate docs site
         run: sh /tools/generate-doc.sh
 
