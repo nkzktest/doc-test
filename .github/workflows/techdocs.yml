@@ -1,0 +1,42 @@
+name: Publish TechDocs Site
+
+on:
+  push:
+    branches: [main]
+    # You can even set it to run only when TechDocs related files are updated.
+    # paths:
+    #   - "docs/**"
+    #   - "mkdocs.yml"
+
+jobs:
+  publish-techdocs-site:
+    runs-on: ubuntu-latest
+    container: intility/techdocs:0.6.1
+
+    # The following secrets are required in your CI environment for publishing files to AWS S3.
+    # e.g. You can use GitHub Organization secrets to set them for all existing and new repositories.
+    env:
+    
+      # ${{ your-variable }}
+      S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+      S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # ENTITY_NAMESPACE: 'default' # default is 'default'
+      ENTITY_KIND: 'Component'
+      ENTITY_NAME: doc-test
+      SOURCE_DIR: '.' # default . Must be same as mkdocs.yml
+      
+      # In a Software template, Scaffolder will replace {{cookiecutter.component_id | jsonify}}
+      # with the correct entity name. This is same as metadata.name in the entity's catalog-info.yaml
+      # ENTITY_NAME: '{{ cookiecutter.component_id | jsonify }}'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Generate docs site
+        run: sh /tools/generate-doc.sh
+
+      - name: Publish docs site
+        run: sh /tools/publish-doc-s3.sh

@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: doc-test
+  description: "doc-test"
+  annotations:
+    github.com/project-slug: nkzktest/doc-test
+    backstage.io/techdocs-ref: dir:.
+spec:
+  type: documentation
+  lifecycle: production
+  owner: "user:default/nick.zakharov_intility.no"

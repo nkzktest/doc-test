@@ -1,0 +1,12 @@
+stages:
+  - build-docs
+
+variables:
+  ENTITY_NAMESPACE: 'default'
+  ENTITY_KIND: 'Component'
+  ENTITY_NAME: doc-test
+  SOURCE_DIR: '.'
+
+include:
+  - project: 'developer-infrastructure/backstage/intility-software-templates'
+    file: '/ci-template/techdoc.gitlab-ci.yml'
